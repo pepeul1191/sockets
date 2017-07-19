@@ -12,7 +12,7 @@
 	<textarea id="texto"></textarea><br>
 	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button>
 	<script type="text/javascript">
-		var webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:4000/?id_sensor=' + $("#idSensor").val()});
+		var webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:3000/echo?id_sensor=' + $("#idSensor").val()});
     
 		$( document ).ready(function() {
 			$("#btnConectarse").click(function(event){
