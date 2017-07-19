@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="bower_components/jquery-simple-websocket/dist/jquery.simple.websocket.min.js" type="text/javascript"></script>
+</head>
+<body>
+	<h1>Prueba Web Sockets</h1>
+	idSensor <input type="text" name="" id="idSensor" value="1"><br>
+	Mensaje:<br>
+	<textarea id="texto"></textarea><br>
+	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button>
+	<script type="text/javascript">
+		var webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:4000/?id_sensor=' + $("#idSensor").val()});
+    
+		$( document ).ready(function() {
+			$("#btnConectarse").click(function(event){
+				webSocket.listen(function(message) {
+				    console.log(message);
+				});
+			});
+		    $("#btnEnviar").click(function(event){
+				var mensaje = $("#texto").val();
+				webSocket.send({ 'mensaje': mensaje }).done(function(message) {
+				    // message send
+				    console.log(message);
+				}).fail(function(message) {
+				    // error sending
+				    console.log(message);
+				});		
+			});
+		});
+	</script>
+</body>
+</html>
