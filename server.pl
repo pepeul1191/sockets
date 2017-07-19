@@ -13,32 +13,35 @@ hook(before_dispatch => sub {
 	#$self->respond_to(any => { data => '', status => 200 });
 });
 
+get '/' => sub{
+		my $self = shift;
+		$self->render(text => ('I ♥ Mojolicious!'));
+};
+
 my $clients = {};
 
 websocket '/echo' => sub {
-    my $self = shift;
+	 my $self = shift;
 
-    app->log->debug(sprintf 'Client connected: %s', $self->tx);
-    my $id = sprintf "%s", $self->tx;
-    $clients->{$id} = $self->tx;
+	 app->log->debug(sprintf 'Client connected: %s', $self->tx);
+	 my $id = sprintf "%s", $self->tx;
+	 $clients->{$id} = $self->tx;
 
-    $self->on(message => sub {
-        my ($self, $msg) = @_;
+	 $self->on(message => sub {
+		  my ($self, $msg) = @_;
+		  my $dt   = DateTime->now( time_zone => 'Asia/Tokyo');
+		  for (keys %$clients) {
+		    $clients->{$_}->send({json => {
+        hms  => $dt->hms,
+        text => $msg,
+		    }});
+		  }
+	 });
 
-        my $dt   = DateTime->now( time_zone => 'Asia/Tokyo');
-
-        for (keys %$clients) {
-            $clients->{$_}->send({json => {
-                hms  => $dt->hms,
-                text => $msg,
-            }});
-        }
-    });
-
-    $self->on(finish => sub {
-        app->log->debug('Client disconnected');
-        delete $clients->{$id};
-    });
+	 $self->on(finish => sub {
+			 app->log->debug('Client disconnected');
+			 delete $clients->{$id};
+		});
 };
 
 app->start;
