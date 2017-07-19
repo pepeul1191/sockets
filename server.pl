@@ -1,5 +1,6 @@
 use Mojolicious::Lite;
 use Mojo::Transaction::WebSocket;
+use Data::Dumper;
 
 hook(before_dispatch => sub {
 	my $self = shift;
@@ -26,6 +27,7 @@ websocket '/echo' => sub {
 	 app->log->debug(sprintf 'Client connected: %s', $self->tx);
 	 my $id = sprintf "%s", $self->tx;
 	 $clients->{$id} = $self->tx;
+	 print("\n");print Dumper($self->req->param('id_sensor'));print("\n");
 
 	 $self->on(message => sub {
 		  my ($self, $msg) = @_;
