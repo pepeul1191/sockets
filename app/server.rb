@@ -10,29 +10,20 @@ App = lambda do |env|
     
     query_params = QueryString.parse(env['QUERY_STRING'])
     db = Database.new
-    puts "1 +++++++++++++++++++++++++++++++++++++++++++"
     rs = db.connection().find({'id_sensor' => query_params['id_sensor'][0]})
+    
     if rs.length >= 1
-      puts " IF"
-        temp = Array.new
         id_usuarios = rs[0]['id_usuario']
-        puts id_usuarios.inspect
-        puts id_usuarios.include?(query_params['id_usuario'][0])
         if id_usuarios.include?(query_params['id_usuario'][0]) != true 
-            puts "no incluye"
-            temp.push(id_usuarios, query_params['id_usuario'][0])
-            puts temp
-            doc = {'id_sensor' => query_params['id_sensor'][0], 'id_usuario' => temp}
+            id_usuarios.push(query_params['id_usuario'][0])
+            doc = {'id_sensor' => query_params['id_sensor'][0], 'id_usuario' => id_usuarios}
             db.connection().update({'id_sensor' => query_params['id_sensor'][0]}, doc)
-        else
-            puts "incluye"
         end
     else
-        puts " ELSE"
         doc = {'id_sensor' => query_params['id_sensor'][0], 'id_usuario' => [query_params['id_usuario'][0]]}
         db.connection().insert(doc)
     end
-    puts "2 +++++++++++++++++++++++++++++++++++++++++++"
+
     ws.on :open do |event|
       p [:open]
       ws.send('Hello, world!')
