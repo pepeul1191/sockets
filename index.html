@@ -7,12 +7,21 @@
 </head>
 <body>
 	<h1>Prueba Web Sockets</h1>
+<<<<<<< HEAD
 	idSensor <input type="text" name="" id="idSensor" value="1"><br>
 	idUsuario <input type="text" name="" id="idUSuario" value="1"><br>
+=======
+	idSensor <input type="text" name="" id="idSensor" value="jdaklsjf"><br>
+>>>>>>> 0f001ee387d4dc35ce222574ea9b153b44f28d6c
 	Mensaje:<br>
 	<textarea id="texto"></textarea><br>
 	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button>
 	<script type="text/javascript">
+<<<<<<< HEAD
+=======
+		var webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:3000/echo?id_sensor=' + $("#idSensor").val()});
+    
+>>>>>>> 0f001ee387d4dc35ce222574ea9b153b44f28d6c
 		$( document ).ready(function() {
 			$("#btnConectarse").click(function(event){
 				var id_sensor = $("#idSensor").val();
