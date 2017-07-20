@@ -14,7 +14,7 @@ hook(before_dispatch => sub {
 
 get '/' => sub {
 	my $c = shift;
-  	$c->render(text => 'Hello World!');
+  	$c->render(text => 'Hello World??');
 };
 
 app->start;
