@@ -1,1 +1,1 @@
-{"max_index":1,"objects":[{"id_sensor":"1","id_usuario":["123","124","125"],"id":0}]}
+{"max_index":2,"objects":[{"id_sensor":"1","id_usuario":["123","124","125"],"id":0},{"id_sensor":"2","id_usuario":["1","2","3"],"id":1}]}
