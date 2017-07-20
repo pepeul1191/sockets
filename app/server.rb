@@ -1,8 +1,13 @@
 # encoding: utf-8
+# app/server.rb
 require 'faye/websocket'
 require 'querystring'
 require 'mongolitedb'
+require 'json'
 require_relative 'database'
+
+@clients = []
+@i = 0
 
 App = lambda do |env|
   if Faye::WebSocket.websocket?(env)
@@ -12,7 +17,7 @@ App = lambda do |env|
 
     ws.on :open do |event|
         rs = db.connection().find({'id_sensor' => query_params['id_sensor'][0]})
-    
+        
         if rs.length >= 1
             id_usuarios = rs[0]['id_usuario']
             if id_usuarios.include?(query_params['id_usuario'][0]) != true 
@@ -25,16 +30,23 @@ App = lambda do |env|
             db.connection().insert(doc)
         end
 
+        @clients.push(ws)
+
         p [:open]
         ws.send('Hello, world!')
     end
 
     ws.on :message do |event|
-        ws.send(event.data)
+        p [:on_message]
+        @clients.each do |client|
+            data_hash = JSON.parse(event.data)
+            client.send(data_hash['mensaje'])
+        end
     end
 
     ws.on :close do |event|
         p [:close, event.code, event.reason]
+        @clients.delete(ws)
         ws = nil
     end
     # Return async Rack response
@@ -44,3 +56,6 @@ App = lambda do |env|
     [200, {'Content-Type' => 'text/plain'}, ['Hello']]
   end
 end
+
+# https://stackoverflow.com/questions/36544766/rails-faye-websocket-client-just-to-send-one-message
+# https://github.com/faye/faye-websocket-ruby

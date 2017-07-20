@@ -1,1 +1,1 @@
-{"max_index":2,"objects":[{"id_sensor":"1","id_usuario":["123","124","125"],"id":0},{"id_sensor":"2","id_usuario":["1","2","3"],"id":1}]}
+{"max_index":3,"objects":[{"id_sensor":"1","id_usuario":["123","124","125","1","2","3","3a"],"id":0},{"id_sensor":"2","id_usuario":["1","2","3"],"id":1},{"id_sensor":"5","id_usuario":["3"],"id":2}]}

@@ -14,15 +14,10 @@ hook(before_dispatch => sub {
 	#$self->respond_to(any => { data => '', status => 200 });
 });
 
-<<<<<<< HEAD
+
 get '/' => sub {
 	my $c = shift;
   	$c->render(text => 'Hello World??');
-=======
-get '/' => sub{
-		my $self = shift;
-		$self->render(text => ('I ♥ Mojolicious!'));
->>>>>>> 0f001ee387d4dc35ce222574ea9b153b44f28d6c
 };
 
 my $clients = {};

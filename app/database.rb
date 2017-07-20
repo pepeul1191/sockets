@@ -1,5 +1,5 @@
+# encoding: utf-8
 # app/database.rb
-
 require 'mongolitedb'
 
 class Database

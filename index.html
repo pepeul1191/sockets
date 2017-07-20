@@ -11,26 +11,31 @@
 	idUsuario <input type="text" name="" id="idUSuario" value="1"><br>
 	Mensaje:<br>
 	<textarea id="texto"></textarea><br>
-	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button>
+	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button><button id="btnCerrar">Cerrar</button><br>
+	<ul id="ulMensajes"></ul>
 	<script type="text/javascript">    
 		$( document ).ready(function() {
+			var webSocket = null;
 			$("#btnConectarse").click(function(event){
 				var id_sensor = $("#idSensor").val();
 				var id_usuario = $("#idUSuario").val();
-				var webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:9292/?id_sensor=' + id_sensor + '&id_usuario=' + id_usuario});
+				webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:9292/?id_sensor=' + id_sensor + '&id_usuario=' + id_usuario});
 				webSocket.listen(function(message) {
-				    console.log(message);
+				    var li = "<li>" + message + "</li>";
+				    $("#ulMensajes").append(li);
 				});
 			});
 		    $("#btnEnviar").click(function(event){
 				var mensaje = $("#texto").val();
 				webSocket.send({ 'mensaje': mensaje }).done(function(message) {
 				    // message send
-				    console.log(message);
 				}).fail(function(message) {
 				    // error sending
 				    console.log(message);
 				});		
+			});
+		    $("#btnCerrar").click(function(event){
+				webSocket.close();
 			});
 		});
 	</script>
