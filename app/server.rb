@@ -17,7 +17,6 @@ App = lambda do |env|
 
     ws.on :open do |event|
         rs = db.connection().find({'id_sensor' => query_params['id_sensor'][0]})
-        
         if rs.length >= 1
             id_usuarios = rs[0]['id_usuario']
             if id_usuarios.include?(query_params['id_usuario'][0]) != true 
