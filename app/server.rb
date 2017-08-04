@@ -57,7 +57,7 @@ App = lambda do |env|
             ws_faye = client[0]
             id_usuario = client[1]
             id_sensor = client[2]
-            puts "id_sensor_param - " +query_params['id_sensor'][0].to_s
+            #puts "id_sensor_param - " +query_params['id_sensor'][0].to_s
             if id_usuarios.include?(id_usuario) == true && id_sensor == query_params['id_sensor'][0]
                 data_hash = JSON.parse(event.data)
                 ws_faye.send(data_hash['mensaje']) # sólo envía mensajes a las instacias de sockets que tienen asociado el usuario que se quiere conectar al sensor
@@ -67,6 +67,12 @@ App = lambda do |env|
 
     ws.on :close do |event|
         p [:close, event.code, event.reason]
+
+        if query_params['tipo'][0] == 'publicador'
+            db.connection()[:sockets].delete_one({'id_sensor' => query_params['id_sensor'][0]})
+        end
+
+         query_params['id_sensor'][0]
         @clients.delete(ws)
         ws = nil
     end
