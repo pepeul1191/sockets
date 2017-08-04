@@ -4,12 +4,12 @@ require 'rubygems'
 require 'em-websocket-client'
 
 EM.run do
-  conn = EventMachine::WebSocketClient.connect("ws://127.0.0.1:9292/?id_sensor=1&id_usuario=1")
+  conn = EventMachine::WebSocketClient.connect("ws://127.0.0.1:9292/?id_sensor=5&id_usuario=4")
 
   EM.add_periodic_timer( 1 ) do
-	puts "Executing timer event: " + Time.now.to_s
+	#puts "Executing timer event: " + Time.now.to_s
 	  conn.callback do
-		conn.send_msg '{"mensaje": "hola desde ruby client ' + Time.now.to_s + '"}'
+		conn.send_msg '{"mensaje": "hola desde ruby client ' + Time.now.to_s + ' - id_sensor = 4"}'
 	  end
   end
 

@@ -11,7 +11,7 @@
 	idUsuario <input type="text" name="" id="idUSuario" value="1"><br>
 	Mensaje:<br>
 	<textarea id="texto"></textarea><br>
-	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button><button id="btnCerrar">Cerrar</button><button id="btnLoop">Loop</button><br>
+	<button id="btnConectarse">Conectarse</button><button id="btnEnviar">Enviar</button><button id="btnCerrar">Cerrar</button><button id="btnLoop">Loop</button><button id="btnLimpiar">Limpiar</button><br>
 	<ul id="ulMensajes"></ul>
 	<script type="text/javascript">    
 		$( document ).ready(function() {
@@ -42,6 +42,9 @@
 				webSocketLoop.listen(function(message) {
 					console.log('LOOP!!!');
 				});
+			});
+		    $("#btnLimpiar").click(function(event){
+				$("#ulMensajes").empty();
 			});
 		});
 	</script>
