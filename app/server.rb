@@ -47,7 +47,7 @@ App = lambda do |env|
 
     ws.on :message do |event|
         p [:on_message]
-
+        db = Database.new
         rs = Array.new
         docs_temp = db.connection()[:sockets].find({'id_sensor' => query_params['id_sensor'][0]})
         docs_temp.each { |doc| rs.push(doc)} 
@@ -67,12 +67,27 @@ App = lambda do |env|
 
     ws.on :close do |event|
         p [:close, event.code, event.reason]
-
+        db = Database.new
         if query_params['tipo'][0] == 'publicador'
             db.connection()[:sockets].delete_one({'id_sensor' => query_params['id_sensor'][0]})
         end
 
-         query_params['id_sensor'][0]
+        if query_params['tipo'][0] == 'subscritor'
+            id_usuarios = Array.new
+            docs_temp = db.connection()[:sockets].find({'id_sensor' => query_params['id_sensor'][0]})
+
+            docs_temp.each do |d|
+                d[:id_usuario].each do|id_usuario|
+                    if id_usuario != query_params['id_usuario'][0]
+                        id_usuarios.push(id_usuario)
+                    end
+                end
+            end
+
+            doc = {'id_sensor' => query_params['id_sensor'][0], 'id_usuario' => id_usuarios}
+            db.connection()[:sockets].update_one({'id_sensor' => query_params['id_sensor'][0]}, '$set' => doc)
+        end
+
         @clients.delete(ws)
         ws = nil
     end
@@ -86,3 +101,4 @@ end
 
 # https://stackoverflow.com/questions/36544766/rails-faye-websocket-client-just-to-send-one-message
 # https://github.com/faye/faye-websocket-ruby
+# http://zetcode.com/db/mongodbruby/

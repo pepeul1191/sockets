@@ -19,7 +19,7 @@
 			$("#btnConectarse").click(function(event){
 				var id_sensor = $("#idSensor").val();
 				var id_usuario = $("#idUSuario").val();
-				webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:9292/?id_sensor=' + id_sensor + '&id_usuario=' + id_usuario});
+				webSocket = $.simpleWebSocket({ url: 'ws://127.0.0.1:9292/?tipo=subscritor&id_sensor=' + id_sensor + '&id_usuario=' + id_usuario});
 				webSocket.listen(function(message) {
 				    var li = "<li>" + message + "</li>";
 				    $("#ulMensajes").append(li);
