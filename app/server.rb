@@ -39,7 +39,7 @@ App = lambda do |env|
             id_sensor = query_params['id_sensor'][0]
         end
 
-        @clients.push([ws, id_usuario, id_sensor])#[ws faye, id_usuario, id_sensor] ...
+        @clients.push([ws, id_usuario, id_sensor, query_params['tipo'][0]])#[ws faye, id_usuario, id_sensor, típo] ...
 
         p [:open]
         ws.send('Hello, world!')
@@ -70,6 +70,17 @@ App = lambda do |env|
         db = Database.new
         if query_params['tipo'][0] == 'publicador'
             db.connection()[:sockets].delete_one({'id_sensor' => query_params['id_sensor'][0]})
+
+            @clients.each do |client| # todos los clientes ws registrados, borrar los sockets observadores
+                ws_faye = client[0]
+                id_usuario = client[1]
+                id_sensor = client[2]
+                tipo = client[3]
+
+                if id_sensor == query_params['id_sensor'][0] && tipo == 'subscritor'
+                    @clients.delete(client)
+                end
+            end
         end
 
         if query_params['tipo'][0] == 'subscritor'
